@@ -1,5 +1,4 @@
 const express = require('express');
-const path = require('path');
 const { connect } = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
@@ -16,8 +15,7 @@ const albumRouter = require('./routes/album.routes');
 const photoRouter = require('./routes/photo.routes');
 
 // Middlewares
-app.use(express.static(__dirname));
-app.use(express.static(path.resolve(__dirname, 'build')));
+app.use(express.static('./build'));
 app.use(express.json());
 app.use(cors());
 
@@ -30,9 +28,7 @@ app.use('/api/albums', albumRouter);
 app.use('/api/photos', photoRouter);
 
 // Errors and redirect
-app.all('*', (req, res) =>
-  res.sendFile(path.join(__dirname, 'build', 'index.html'))
-);
+app.all('*', (req, res) => res.redirect('/'));
 app.use(errorHandlers.internalServer);
 
 const startServer = async () => {
